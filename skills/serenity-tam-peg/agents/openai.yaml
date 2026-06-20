@@ -1,0 +1,4 @@
+interface:
+  display_name: "Serenity TAM-PEG"
+  short_description: "Adjusts PEG by TAM and quality"
+  default_prompt: "Use $serenity-tam-peg to evaluate a ticker's valuation with forward PE, EPS CAGR, TAM runway factor, quality factor, and position-type framing."

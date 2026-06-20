@@ -1,0 +1,4 @@
+interface:
+  display_name: "Serenity DMA Health"
+  short_description: "Scores valuation and trend health"
+  default_prompt: "Use $serenity-dma-health to score a ticker with latest fundamentals, DMA trend speed, price-DMA divergence, escape ratio, and estimate revisions."

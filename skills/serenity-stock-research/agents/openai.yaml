@@ -1,0 +1,4 @@
+interface:
+  display_name: "Serenity Stock Research"
+  short_description: "Routes bottleneck and valuation research"
+  default_prompt: "Use my Serenity stock research kit to analyze this ticker: [ticker]. Start with the supply-chain bottleneck thesis, then run valuation and memo checks."

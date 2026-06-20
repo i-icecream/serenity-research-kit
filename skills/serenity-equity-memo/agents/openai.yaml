@@ -1,0 +1,4 @@
+interface:
+  display_name: "Serenity Equity Memo"
+  short_description: "Creates source-backed stock memos"
+  default_prompt: "Use $serenity-equity-memo to analyze this ticker with an investment view, SEC-backed financials, valuation scenarios, catalysts, risks, and Serenity framework cross-checks."

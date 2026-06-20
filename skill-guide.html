@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Serenity Research Kit Skill Guide</title>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --paper: #fffdf8;
+      --ink: #1f2528;
+      --muted: #66706b;
+      --line: #d8d4c8;
+      --green: #2f6f5e;
+      --green-soft: #dcebe4;
+      --blue: #355c8a;
+      --blue-soft: #dfe8f3;
+      --red: #9a4a3f;
+      --red-soft: #f1ddd7;
+      --gold: #94722f;
+      --gold-soft: #f0e5c8;
+      --gray-soft: #ece8de;
+      --shadow: 0 14px 40px rgba(31, 37, 40, 0.08);
+      --radius: 8px;
+      font-family: Inter, "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: end;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(30px, 5vw, 56px);
+      line-height: 1;
+      letter-spacing: 0;
+      max-width: 760px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      max-width: 760px;
+      margin-top: 12px;
+      font-size: 16px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .badge {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--muted);
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .source-box {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      min-width: 250px;
+      box-shadow: var(--shadow);
+    }
+
+    .source-box strong {
+      display: block;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: .04em;
+      margin-bottom: 7px;
+    }
+
+    .source-box code {
+      display: block;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 12px;
+      padding: 14px 0;
+      background: rgba(246, 244, 239, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      min-height: 44px;
+    }
+
+    .search svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--muted);
+      flex: 0 0 auto;
+    }
+
+    .search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--muted);
+      border-radius: var(--radius);
+      padding: 9px 12px;
+      cursor: pointer;
+      min-height: 42px;
+    }
+
+    .tab.active {
+      color: white;
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .panel {
+      display: none;
+      margin-top: 14px;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 26px 0 14px;
+    }
+
+    .section-head h2 {
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      max-width: 620px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .skill-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .skill-card[data-family="route"] {
+      border-left: 5px solid var(--ink);
+    }
+
+    .skill-card[data-family="bottleneck"] {
+      border-left: 5px solid var(--green);
+    }
+
+    .skill-card[data-family="valuation"] {
+      border-left: 5px solid var(--blue);
+    }
+
+    .skill-card[data-family="timing"] {
+      border-left: 5px solid var(--gold);
+    }
+
+    .skill-card[data-family="news"] {
+      border-left: 5px solid var(--red);
+    }
+
+    .skill-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .skill-name {
+      font-size: 20px;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .tag {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: nowrap;
+      color: var(--ink);
+      background: var(--gray-soft);
+    }
+
+    .tag.green {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .tag.blue {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .tag.red {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .tag.gold {
+      background: var(--gold-soft);
+      color: var(--gold);
+    }
+
+    .info-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .info-list div {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    .info-list dt {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .info-list dd {
+      margin: 0;
+      color: var(--ink);
+    }
+
+    code,
+    .mono {
+      font-family: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    }
+
+    .prompt {
+      background: #222827;
+      color: #f7f3e8;
+      border-radius: var(--radius);
+      padding: 13px;
+      display: grid;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .prompt code {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+    }
+
+    .copy {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.08);
+      color: #f7f3e8;
+      border-radius: var(--radius);
+      padding: 7px 10px;
+      cursor: pointer;
+      min-height: 36px;
+    }
+
+    .copy svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+    }
+
+    .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .matrix th,
+    .matrix td {
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      padding: 12px;
+      vertical-align: top;
+    }
+
+    .matrix th {
+      color: var(--muted);
+      font-size: 13px;
+      background: #f0ece2;
+      font-weight: 600;
+    }
+
+    .matrix tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .flow {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .flow-map {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .flow-step {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      min-height: 120px;
+      background: #fbf9f2;
+      position: relative;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      width: 10px;
+      border-top: 2px solid var(--line);
+    }
+
+    .flow-step b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .flow-step span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .principle {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .principle h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .principle p {
+      color: var(--muted);
+    }
+
+    .recipes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .recipe {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 12px;
+    }
+
+    .recipe h3 {
+      font-size: 18px;
+    }
+
+    .steps {
+      margin: 0;
+      padding-left: 19px;
+      color: var(--muted);
+    }
+
+    .steps li {
+      margin: 4px 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 980px) {
+      .topbar,
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs {
+        justify-content: flex-start;
+      }
+
+      .grid,
+      .recipes,
+      .principles {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-map {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .flow-step:not(:last-child)::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .shell {
+        width: min(100vw - 20px, 1180px);
+        padding-top: 16px;
+      }
+
+      .flow-map {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 8px;
+      }
+
+      .matrix {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .info-list div {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <h1>Serenity Research Kit</h1>
+        <p class="subtitle">一个个人版投研技能包：先判断标的是不是供应链卡点，再用买方 memo、增长估值、TAM-PEG、趋势健康度和新闻转 alpha 模块做复核。</p>
+        <div class="badge-row">
+          <span class="badge">来源：muxuuu/serenity-skill</span>
+          <span class="badge">来源：haskaomni/serenity-skill</span>
+          <span class="badge">用途：标的分析 + 估值判断</span>
+        </div>
+      </div>
+      <aside class="source-box">
+        <strong>本地安装位置</strong>
+        <code>C:\Users\icecream\.codex\skills</code>
+      </aside>
+    </header>
+
+    <nav class="toolbar" aria-label="Skill guide controls">
+      <label class="search" aria-label="搜索 skill">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <input id="searchInput" type="search" placeholder="搜索：估值、卡点、新闻、DMA、memo、TAM...">
+      </label>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-panel="skills" type="button">Skills</button>
+        <button class="tab" data-panel="scenarios" type="button">场景</button>
+        <button class="tab" data-panel="workflow" type="button">流程</button>
+        <button class="tab" data-panel="data" type="button">数据源</button>
+        <button class="tab" data-panel="principles" type="button">原理</button>
+      </div>
+    </nav>
+
+    <section id="skills" class="panel active">
+      <div class="section-head">
+        <h2>技能清单</h2>
+        <p>默认从 `serenity-stock-research` 进入；其他 skill 只在问题需要时调用。</p>
+      </div>
+
+      <div class="grid" id="skillGrid">
+        <article class="skill-card" data-family="route" data-keywords="router full stock research route 综合 分析 入口 标的">
+          <div class="skill-top">
+            <h3 class="skill-name"><code>serenity-stock-research</code></h3>
+            <span class="tag">入口</span>
+          </div>
+          <dl class="info-list">
+            <div><dt>什么时候用</dt><dd>你只说“分析某个标的”“做完整判断”“卡点 + 估值一起看”时。</dd></div>
+            <div><dt>怎么用</dt><dd>让它先路由：卡点判断走 bottleneck，估值走 memo/growth/TAM，择时健康度走 DMA。</dd></div>
+            <div><dt>原理</dt><dd>不把所有框架混成一锅，而是按问题类型调用最合适的子模块。</dd></div>
+          </dl>
+          <div class="prompt"><code>Use $serenity-stock-research to analyze [ticker]. Start with the supply-chain bottleneck thesis, then run valuation and bull/base/bear checks.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+
+        <article class="skill-card" data-family="bottleneck" data-keywords="bottleneck supply chain 卡点 供应链 产业链 半导体 CPO 光通信 材料 证据">
+          <div class="skill-top">
+            <h3 class="skill-name"><code>serenity-bottleneck-research</code></h3>
+            <span class="tag green">卡点</span>
+          </div>
+          <dl class="info-list">
+            <div><dt>什么时候用</dt><dd>判断公司是不是 AI/半导体/硬件/材料链上的真实瓶颈。</dd></div>
+            <div><dt>怎么用</dt><dd>要求输出产业链位置、稀缺层级、证据强弱、红旗、证伪条件。</dd></div>
+            <div><dt>原理</dt><dd>从下游需求沿供应链往上游追，找低替代、长认证、扩产慢、买方不得不付钱的层。</dd></div>
+          </dl>
+          <div class="prompt"><code>Use $serenity-bottleneck-research to judge whether [company] is a real supply-chain bottleneck. Show the layer, evidence, risks, and falsification conditions.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+
+        <article class="skill-card" data-family="valuation" data-keywords="memo buy-side equity research SOTP valuation 估值 财报 情景 bull base bear">
+          <div class="skill-top">
+            <h3 class="skill-name"><code>serenity-equity-memo</code></h3>
+            <span class="tag blue">Memo</span>
+          </div>
+          <dl class="info-list">
+            <div><dt>什么时候用</dt><dd>需要完整单股研究、投资委员会 memo、SOTP、bull/base/bear 情景。</dd></div>
+            <div><dt>怎么用</dt><dd>给 ticker，要求拉最新 filings/IR/电话会，形成投资观点、估值、催化剂和监控表。</dd></div>
+            <div><dt>原理</dt><dd>买方研究先回答“市场哪里错了”，再用财务、估值和证伪点检验。</dd></div>
+          </dl>
+          <div class="prompt"><code>Use $serenity-equity-memo to create a buy-side memo for [ticker], including financials, valuation scenarios, catalysts, risks, and monitoring metrics.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+
+        <article class="skill-card" data-family="valuation" data-keywords="bayesian growth valuation intrinsic implied fomo 内在增长 市场隐含 增长估值">
+          <div class="skill-top">
+            <h3 class="skill-name"><code>serenity-growth-valuation</code></h3>
+            <span class="tag blue">增长估值</span>
+          </div>
+          <dl class="info-list">
+            <div><dt>什么时候用</dt><dd>争议点是“市场给的估值是否已经反映未来 3-5 年增长”。</dd></div>
+            <div><dt>怎么用</dt><dd>让它拆 H0-H5 增长假设，比较内在增长、市场隐含增长和 FOMO 溢价。</dd></div>
+            <div><dt>原理</dt><dd>把每条新信息当作对未来增长概率的更新，而不是简单说利好/利空。</dd></div>
+          </dl>
+          <div class="prompt"><code>Use $serenity-growth-valuation to compare [ticker]'s intrinsic 3-5Y growth with market-implied growth and identify FOMO or multiple-expansion risk.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+
+        <article class="skill-card" data-family="valuation" data-keywords="tam peg runway quality factor growth stock 估值 成长股">
+          <div class="skill-top">
+            <h3 class="skill-name"><code>serenity-tam-peg</code></h3>
+            <span class="tag blue">TAM-PEG</span>
+          </div>
+          <dl class="info-list">
+            <div><dt>什么时候用</dt><dd>成长股 PE/PEG 看起来贵，但可能有超长 TAM runway 或高质量卡位。</dd></div>
+            <div><dt>怎么用</dt><dd>输入 forward PE、EPS CAGR、TAM 增速/渗透率、质量因子和稀释风险。</dd></div>
+            <div><dt>原理</dt><dd>传统 PEG 只看增长速度；TAM-Adj-PEG 同时看增长能持续多久、能否落到公司利润里。</dd></div>
+          </dl>
+          <div class="prompt"><code>Use $serenity-tam-peg to evaluate whether [ticker]'s valuation is justified by EPS growth, TAM runway, quality factor, and dilution risk.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+
+        <article class="skill-card" data-family="timing" data-keywords="dma technical trend health moving average atr revision 走势 均线 健康度 择时">
+          <div class="skill-top">
+            <h3 class="skill-name"><code>serenity-dma-health</code></h3>
+            <span class="tag gold">健康度</span>
+          </div>
+          <dl class="info-list">
+            <div><dt>什么时候用</dt><dd>标的涨太多、跌到均线附近、想判断趋势是否被基本面支持时。</dd></div>
+            <div><dt>怎么用</dt><dd>需要最新价格、20/50/100/200DMA、ATR、指引、预期修正和基本面增速。</dd></div>
+            <div><dt>原理</dt><dd>比较股价均线速度和基本面速度，判断是健康趋势、过热逃逸，还是基本面变差后的破位。</dd></div>
+          </dl>
+          <div class="prompt"><code>Use $serenity-dma-health to score [ticker]'s valuation and trend health using fundamentals, moving averages, divergence, and estimate revisions.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+
+        <article class="skill-card" data-family="news" data-keywords="alpha news demand product launch procurement 财报电话会 新闻 需求 小盘 弹性">
+          <div class="skill-top">
+            <h3 class="skill-name"><code>serenity-alpha</code></h3>
+            <span class="tag red">新闻转 Alpha</span>
+          </div>
+          <dl class="info-list">
+            <div><dt>什么时候用</dt><dd>起点是一条新闻、产品发布、订单、采购、客户线索或电话会暗示。</dd></div>
+            <div><dt>怎么用</dt><dd>让它判断新闻是否已经变成可观察需求，再映射到收入、利润、现金流和小市值弹性。</dd></div>
+            <div><dt>原理</dt><dd>新闻本身不重要，重要的是它能否改变某家小公司未来几个季度的财务报表。</dd></div>
+          </dl>
+          <div class="prompt"><code>Use $serenity-alpha to analyze this news: [paste news]. Map observable demand, financial transmission, small-cap beneficiaries, risks, and validation metrics.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="scenarios" class="panel">
+      <div class="section-head">
+        <h2>场景选择</h2>
+        <p>不要每次全开。问题越清楚，调用越少，结论越干净。</p>
+      </div>
+
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>你的问题</th>
+            <th>优先调用</th>
+            <th>补充调用</th>
+            <th>最后要拿到什么</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>“帮我完整分析一个 ticker”</td>
+            <td><code>serenity-stock-research</code></td>
+            <td>自动组合 bottleneck + memo + valuation</td>
+            <td>卡点真伪、估值区间、催化剂、风险、证伪条件</td>
+          </tr>
+          <tr>
+            <td>“它是不是 CPO/AI 供应链卡点”</td>
+            <td><code>serenity-bottleneck-research</code></td>
+            <td><code>serenity-equity-memo</code></td>
+            <td>卡在哪层、谁依赖它、证据强弱、替代风险</td>
+          </tr>
+          <tr>
+            <td>“这票现在贵不贵”</td>
+            <td><code>serenity-equity-memo</code></td>
+            <td><code>serenity-growth-valuation</code> / <code>serenity-tam-peg</code></td>
+            <td>市场隐含预期、估值情景、上行/下行条件</td>
+          </tr>
+          <tr>
+            <td>“新闻出来后谁最受益”</td>
+            <td><code>serenity-alpha</code></td>
+            <td><code>serenity-bottleneck-research</code></td>
+            <td>需求是否真实、财务传导路径、小公司弹性候选</td>
+          </tr>
+          <tr>
+            <td>“涨太多还能不能追，跌下来是否健康”</td>
+            <td><code>serenity-dma-health</code></td>
+            <td><code>serenity-growth-valuation</code></td>
+            <td>趋势是否被基本面支持、是否过热、是否破位</td>
+          </tr>
+          <tr>
+            <td>“几个候选里谁优先研究”</td>
+            <td><code>serenity-bottleneck-research</code></td>
+            <td><code>serenity-equity-memo</code></td>
+            <td>先排产业链层级，再排公司，最后看估值红旗</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="workflow" class="panel">
+      <div class="section-head">
+        <h2>组合流程</h2>
+        <p>完整单股分析建议用这条链路。它把“像 Serenity 一样找卡点”和“买方估值判断”分开处理。</p>
+      </div>
+
+      <div class="flow">
+        <div class="flow-map">
+          <div class="flow-step"><b>1. 定义问题</b><span>ticker、市场、时间窗口、你关心的是卡点、估值还是新闻。</span></div>
+          <div class="flow-step"><b>2. 画产业链</b><span>从下游 capex 或需求开始，上溯到组件、设备、材料、衬底。</span></div>
+          <div class="flow-step"><b>3. 判卡点</b><span>看供应商数量、认证周期、替代方案、扩产难度和客户依赖。</span></div>
+          <div class="flow-step"><b>4. 做估值</b><span>用 memo、增长隐含预期、TAM-PEG 或 SOTP 检查价格是否透支。</span></div>
+          <div class="flow-step"><b>5. 看时点</b><span>用催化剂、财报节点、估计修正和 DMA 健康度判断当前状态。</span></div>
+          <div class="flow-step"><b>6. 证伪复核</b><span>列出什么事实会推翻 thesis，避免只为看多找理由。</span></div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>常用组合</h2>
+        <p>这些 prompt 可以直接复制改 ticker。</p>
+      </div>
+
+      <div class="recipes">
+        <article class="recipe">
+          <h3>完整标的分析</h3>
+          <ol class="steps">
+            <li>先用 `serenity-bottleneck-research` 判断卡点和证据。</li>
+            <li>再用 `serenity-equity-memo` 做财务、估值、情景。</li>
+            <li>最后用 `serenity-growth-valuation` 检查市场隐含增长。</li>
+          </ol>
+          <div class="prompt"><code>Use $serenity-stock-research to analyze [ticker]. Start with bottleneck strength, then run buy-side valuation, bull/base/bear scenarios, catalysts, risks, and falsification checks.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+
+        <article class="recipe">
+          <h3>新闻转投资线索</h3>
+          <ol class="steps">
+            <li>先用 `serenity-alpha` 判断是否有真实需求变化。</li>
+            <li>再用 `serenity-bottleneck-research` 找受益链条中的稀缺层。</li>
+            <li>只把候选当作待验证清单，不直接当结论。</li>
+          </ol>
+          <div class="prompt"><code>Use $serenity-alpha and $serenity-bottleneck-research to analyze this news: [news]. Find observable demand, financial transmission, bottleneck layers, candidate companies, and verification metrics.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+
+        <article class="recipe">
+          <h3>估值复核</h3>
+          <ol class="steps">
+            <li>先用 `serenity-equity-memo` 建 bull/base/bear。</li>
+            <li>成长股再加 `serenity-tam-peg`。</li>
+            <li>高热度标的再加 `serenity-growth-valuation` 检查 FOMO。</li>
+          </ol>
+          <div class="prompt"><code>Use $serenity-equity-memo, $serenity-growth-valuation, and $serenity-tam-peg to value [ticker]. Separate reported facts, management claims, assumptions, and pure speculation.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+
+        <article class="recipe">
+          <h3>当前位置健康度</h3>
+          <ol class="steps">
+            <li>先确认基本面没有被证伪。</li>
+            <li>再用 `serenity-dma-health` 看趋势是否过热或破位。</li>
+            <li>把它当状态检查，不当独立买卖信号。</li>
+          </ol>
+          <div class="prompt"><code>Use $serenity-dma-health to evaluate [ticker]'s current trend health. Compare price/DMA divergence with fundamental speed and estimate revisions.</code><button class="copy" type="button"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>复制</button></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="data" class="panel">
+      <div class="section-head">
+        <h2>数据源边界</h2>
+        <p>这些 skill 会指导 Codex 去找真实数据和新闻，但 skill 本身不是数据库、行情终端或新闻订阅器。</p>
+      </div>
+
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>问题</th>
+            <th>答案</th>
+            <th>怎么处理</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>会不会找真实数据？</td>
+            <td>会，只要当前 Codex 环境有联网、浏览器、搜索、行情或文件工具。</td>
+            <td>skill 会要求优先查公司公告、SEC/交易所文件、IR、财报电话会、新闻和可信行业资料。</td>
+          </tr>
+          <tr>
+            <td>会不会自动追踪新闻？</td>
+            <td>不会。它不是定时新闻雷达，也不会自己后台更新。</td>
+            <td>你问“最新”“今天”“近期新闻”或贴一条新闻时，Codex 才会按 skill 的规则去查或分析。</td>
+          </tr>
+          <tr>
+            <td>能不能用你另一个帖子追踪项目？</td>
+            <td>可以，那个项目负责发现线索，这套 kit 负责把线索变成标的研究和估值判断。</td>
+            <td>把追踪项目产出的 ticker、新闻、推文摘要或主题丢给 `serenity-stock-research` / `serenity-alpha`。</td>
+          </tr>
+          <tr>
+            <td>如果没有实时数据怎么办？</td>
+            <td>应该明确标注“未核验”或“初步框架判断”。</td>
+            <td>不要编价格、市值、订单、客户和估值倍数；列出下一步要查的具体来源。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-head">
+        <h2>优先数据源</h2>
+        <p>不同模块看不同证据，越靠近最终结论，越需要一手来源。</p>
+      </div>
+
+      <div class="principles">
+        <article class="principle">
+          <h3>公司一手资料</h3>
+          <p>10-K、10-Q、8-K、20-F、6-K、年报、季报、交易所公告、IR presentation、earnings release、电话会 transcript。</p>
+        </article>
+        <article class="principle">
+          <h3>市场与估值数据</h3>
+          <p>最新价格、市值、EV、forward PE、EV/S、共识预期、估计修正、同业倍数。需要实时或近期数据源支持。</p>
+        </article>
+        <article class="principle">
+          <h3>产业链证据</h3>
+          <p>客户/供应商交叉提及、订单、backlog、认证、扩产、专利、标准、招投标、行业会议、可信行业媒体。</p>
+        </article>
+        <article class="principle">
+          <h3>新闻和社交线索</h3>
+          <p>新闻、推文、论坛和 KOL 只作线索。只有被公告、财报、客户/供应商或行业数据验证后，才升级为证据。</p>
+        </article>
+        <article class="principle">
+          <h3>A 股资料路径</h3>
+          <p>巨潮资讯、交易所问询函/互动易、临时公告、业绩预告、招投标、环评/能评、专利和海关等公开数据。</p>
+        </article>
+        <article class="principle">
+          <h3>技术健康度数据</h3>
+          <p>`serenity-dma-health` 需要价格、20/50/100/200DMA、ATR、指引和预期修正。缺数据时只能输出待补字段。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="principles" class="panel">
+      <div class="section-head">
+        <h2>底层原理</h2>
+        <p>这套 kit 的核心不是追推文，而是把标的研究拆成几个可复核的问题。</p>
+      </div>
+
+      <div class="principles">
+        <article class="principle">
+          <h3>先产业链，后 ticker</h3>
+          <p>先问“哪一层供给最难扩、最难替代”，再问“哪家公司离这一层最近”。这样能避免一上来就被热门股票牵着走。</p>
+        </article>
+        <article class="principle">
+          <h3>证据分层</h3>
+          <p>财报、公告、电话会、客户/供应商交叉验证优先；社交媒体和二手报道只当线索。越靠近结论，证据要求越高。</p>
+        </article>
+        <article class="principle">
+          <h3>估值看隐含预期</h3>
+          <p>不是只说“贵/便宜”，而是反推当前价格需要兑现什么增长、利润率、TAM 份额和估值倍数。</p>
+        </article>
+        <article class="principle">
+          <h3>新闻要落到报表</h3>
+          <p>一个新闻只有能影响收入、毛利、订单、现金流或资产负债表，才可能变成 alpha。否则只是叙事热度。</p>
+        </article>
+        <article class="principle">
+          <h3>趋势服从基本面</h3>
+          <p>DMA 健康度不是纯技术分析。它检查价格速度和基本面速度是否匹配，防止把过热当强势，把破位当便宜。</p>
+        </article>
+        <article class="principle">
+          <h3>证伪比背书重要</h3>
+          <p>每个 thesis 都要明确什么事实会让它降级或失败：替代路线、稀释、客户流失、扩产超预期、估值已透支。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const panels = document.querySelectorAll(".panel");
+    const searchInput = document.getElementById("searchInput");
+    const cards = document.querySelectorAll(".skill-card");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((item) => item.classList.remove("active"));
+        panels.forEach((item) => item.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(tab.dataset.panel).classList.add("active");
+      });
+    });
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim().toLowerCase();
+      cards.forEach((card) => {
+        const haystack = card.innerText.toLowerCase() + " " + card.dataset.keywords.toLowerCase();
+        card.classList.toggle("hidden", query && !haystack.includes(query));
+      });
+      if (query) {
+        document.querySelector('[data-panel="skills"]').click();
+      }
+    });
+
+    document.querySelectorAll(".copy").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const text = button.previousElementSibling.innerText;
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = button.innerHTML;
+          button.textContent = "已复制";
+          setTimeout(() => { button.innerHTML = original; }, 1200);
+        } catch {
+          const range = document.createRange();
+          range.selectNode(button.previousElementSibling);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

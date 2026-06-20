@@ -1,0 +1,4 @@
+interface:
+  display_name: "Serenity Growth Valuation"
+  short_description: "Compares intrinsic and implied growth"
+  default_prompt: "Use $serenity-growth-valuation to analyze this company with Bayesian growth hypotheses, implied growth, FOMO, valuation state, risks, and verification metrics."
