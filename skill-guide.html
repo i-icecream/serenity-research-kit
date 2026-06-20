@@ -568,6 +568,7 @@
         <button class="tab" data-panel="scenarios" type="button">场景</button>
         <button class="tab" data-panel="workflow" type="button">流程</button>
         <button class="tab" data-panel="data" type="button">数据源</button>
+        <button class="tab" data-panel="scope" type="button">边界</button>
         <button class="tab" data-panel="principles" type="button">原理</button>
       </div>
     </nav>
@@ -860,6 +861,76 @@
         <article class="principle">
           <h3>技术健康度数据</h3>
           <p>`serenity-dma-health` 需要价格、20/50/100/200DMA、ATR、指引和预期修正。缺数据时只能输出待补字段。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="scope" class="panel">
+      <div class="section-head">
+        <h2>适用边界</h2>
+        <p>这套 kit 有两个层次：卡点框架有明显偏好，估值框架覆盖更广。</p>
+      </div>
+
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>公司类型</th>
+            <th>卡点框架适用度</th>
+            <th>估值模块适用度</th>
+            <th>怎么用才对</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>小/中市值硬科技、材料、设备、零部件、半导体供应链</td>
+            <td>高</td>
+            <td>高</td>
+            <td>先找产业链卡点，再做估值和证伪。这是本 kit 的最强区。</td>
+          </tr>
+          <tr>
+            <td>大市值半导体、云厂、平台型 AI 公司</td>
+            <td>中</td>
+            <td>高</td>
+            <td>卡点框架只用来判断链上地位；真正结论主要靠增长、利润率、估值和资本开支周期。</td>
+          </tr>
+          <tr>
+            <td>SaaS、互联网平台、消费品牌、金融公司</td>
+            <td>低</td>
+            <td>中到高</td>
+            <td>不要强行找物理卡点。用 equity memo、growth valuation、TAM-PEG 做普通估值和 thesis 复核。</td>
+          </tr>
+          <tr>
+            <td>纯周期、商品、宏观交易、ETF</td>
+            <td>低到中</td>
+            <td>中</td>
+            <td>重点看供需周期、价格曲线、资产负债表和趋势健康度，不要把它包装成单公司卡点。</td>
+          </tr>
+          <tr>
+            <td>早期亏损、pre-revenue、二元事件公司</td>
+            <td>视情况</td>
+            <td>视情况</td>
+            <td>可以做 milestone/option-style 分析，但必须降低精度，明确融资、稀释和验证节点。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-head">
+        <h2>一句话原则</h2>
+        <p>先判断问题属于哪一类，再选择工具。</p>
+      </div>
+
+      <div class="principles">
+        <article class="principle">
+          <h3>卡点框架偏小市值</h3>
+          <p>Serenity 式赔率通常来自小公司控制大链条里的稀缺层。市值越大、覆盖越充分，卡点框架越容易只剩定性价值。</p>
+        </article>
+        <article class="principle">
+          <h3>估值框架更通用</h3>
+          <p>买方 memo、内在增长、TAM-PEG 和 DMA 健康度可以分析绝大多数上市公司，只是输入指标和估值尺子要换。</p>
+        </article>
+        <article class="principle">
+          <h3>不要硬套</h3>
+          <p>如果公司不是物理供应链卡点，就直说“不适合用卡点框架”，转入普通基本面、增长和估值分析。</p>
         </article>
       </div>
     </section>

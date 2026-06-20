@@ -7,6 +7,12 @@ Personal stock-research skill kit built from:
 
 This kit keeps the original strengths separate instead of merging all logic into one large skill.
 
+## Scope
+
+The bottleneck framework is strongest for small and mid-cap companies in physical supply chains where scarcity, qualification cycles, customer urgency, and market neglect can create asymmetric upside. It is less decisive for mega-cap compounders, broad software platforms, banks, consumer brands, or companies whose value is driven mainly by macro, regulation, network effects, or capital allocation.
+
+The valuation modules are broader. `serenity-equity-memo`, `serenity-growth-valuation`, `serenity-tam-peg`, and `serenity-dma-health` can still be used on large caps, software, platforms, cyclicals, and non-bottleneck companies. In those cases, use the kit as a general valuation and thesis-testing workflow, not as proof that the company is a Serenity-style bottleneck.
+
 ## Skills
 
 | Skill | Role |
