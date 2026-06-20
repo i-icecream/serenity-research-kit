@@ -41,12 +41,12 @@ For valuation only:
 Use $serenity-equity-memo and $serenity-growth-valuation to value [ticker].
 ```
 
-## Install Location
+## Install
 
-The current version has also been copied to:
+Copy the skill folders into your Codex skills directory:
 
 ```text
-C:\Users\icecream\.codex\skills
+skills/* -> ~/.codex/skills/
 ```
 
-Edit the working copy under this repository first, then copy updated skill folders into the Codex skills directory when ready.
+Restart Codex if newly copied skills do not appear immediately.
